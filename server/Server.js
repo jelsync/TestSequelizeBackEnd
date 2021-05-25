@@ -13,4 +13,4 @@ app.use('api/user', require('./routes/user'));
 
 app.listen(3000, () => {
   console.log("Listen port ", process.env.PORT);
-});
+})
