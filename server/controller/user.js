@@ -1,11 +1,22 @@
 const { response } = require('express');
 let Users = require('../../models').User;
+let Products = require('../../models').Product;
+let UserProducts = require('../../models').UserProduct;
+let Emails = require('../../models').Email;
+
+
+
 
 const getUsers = async (req, res = response) => {
-    const users = await Users.findAll();
-    res.json({
-        users
+    const users = await Users.findAll({
+        include:[{
+            model: Emails,
+            where:{
+                id: 1
+            }
+        }]
     });
+    res.json(users);
 }
 
 const getUser = async (req, res = response) => {
