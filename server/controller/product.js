@@ -4,10 +4,7 @@ const { response } = require('express');
 // let UserProducts = require('../../models').UserProduct;
 // let Emails = require('../../models').Email;
 
-
-
-
-const getUsers = async (req, res = response) => {
+const getProducts = async (req, res = response) => {
     const users = await Users.findAll({
         // include:[{
         //     model: Buys,
@@ -19,7 +16,7 @@ const getUsers = async (req, res = response) => {
     res.json(users);
 }
 
-const getUser = async (req, res = response) => {
+const getProduct = async (req, res = response) => {
     const { id } = req.params;
     const user = await Users.findByPk(id);
     if (!user) {
@@ -31,7 +28,7 @@ const getUser = async (req, res = response) => {
 
 }
 
-const createUser = async (req, res = response) => {
+const createProduct = async (req, res = response) => {
     const { body } = req;
 
     const existeEmial = await Users.findOne({
@@ -51,7 +48,7 @@ const createUser = async (req, res = response) => {
     });
 }
 
-const deleteUser = async (req, res = response) => {
+const deleteProduct = async (req, res = response) => {
     const { id } = req.params;
 
     const user = await Users.findByPk(id);
@@ -69,7 +66,7 @@ const deleteUser = async (req, res = response) => {
     });
 }
 
-const putUser = async (req, res = response) => {
+const putProduct = async (req, res = response) => {
     const { id } = req.params;
     const { body } = req;
 
@@ -96,9 +93,9 @@ const putUser = async (req, res = response) => {
 }
 
 module.exports = {
-    getUser,
-    getUsers,
-    createUser,
-    deleteUser,
-    putUser
+    getProduct,
+    getProducts,
+    createProduct,
+    deleteProduct,
+    putProduct
 }

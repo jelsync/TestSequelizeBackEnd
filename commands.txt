@@ -1,0 +1,8 @@
+// Creater Model
+npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
+
+// Generate migrate
+npx sequelize-cli migration:generate --name migration-skeleton
+
+// Running migration
+npx sequelize-cli db:migrate
