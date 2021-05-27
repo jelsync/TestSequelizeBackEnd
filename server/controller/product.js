@@ -3,97 +3,92 @@ let Products = require('../../models').Product;
 let Categories = require('../../models').Category;
 
 const getProducts = async (req, res = response) => {
-    const products = await Products.findAll({
-        include: [{
-            model: Categories,
-            where: {
-                id: 1
-            }
-        }]
-    });
+    const products = await Products.findAll();
     res.json(products);
 }
 
-// // const getProduct = async (req, res = response) => {
-// //     // const { id } = req.params;
-// //     // const user = await Products.findByPk(id);
-// //     // if (!user) {
-// //     //     return res.json({
-// //     //         mgs: 'Usuario no existe'
-// //     //     });
-// //     // }
-// //     // return res.json(user);
+const getProduct = async (req, res = response) => {
+    const { id } = req.params;
+    const product = await Products.findByPk(id);
 
-// // }
+    if (!product) {
+        return res.json({
+            mgs: 'Producto no existe'
+        });
+    }
+    return res.json(product);
 
-// // const createProduct = async (req, res = response) => {
-// //     // const { body } = req;
+}
 
-// //     // const existeEmial = await Products.findOne({
-// //     //     where: {
-// //     //         email: body.email
-// //     //     }
-// //     // });
-// //     // if (existeEmial) {
-// //     //     return res.json({
-// //     //         mgs: 'Ya existe corre ' + body.email
-// //     //     });
-// //     // }
-// //     // const user = Products.build(body);
-// //     // await user.save();
-// //     // res.json({
-// //     //     ok: true
-// //     // });
-// // }
+const createProduct = async (req, res = response) => {
+    const { body } = req;
 
-// // const deleteProduct = async (req, res = response) => {
-// //     // const { id } = req.params;
+    const existeName = await Products.findOne({
+        where: {
+            name: body.name
+        }
+    });
+    if (existeName) {
+        return res.json({
+            mgs: 'Ya existe producto ' + body.name
+        });
+    }
+    const product = Products.build(body);
+    await product.save();
+    res.json({
+        ok: true
+    });
+}
 
-// //     // const user = await Products.findByPk(id);
+const deleteProduct = async (req, res = response) => {
+    const { id } = req.params;
 
-// //     // if (!user) {
-// //     //     return res.json({
-// //     //         mgs: 'No existe usuario '
-// //     //     });
-// //     // }
+    const product = await Products.findByPk(id);
 
-// //     // await user.destroy(); //ELIMINAR USUARIO DE LA BASE DE DATOS
-// //     // // await Product.update({ estado: false });
-// //     // res.json({
-// //     //     mgs: 'Usuario eliminado'
-// //     // });
-// // }
+    if (!product) {
+        return res.json({
+            mgs: 'No existe Producto'
+        });
+    }
 
-// // const putProduct = async (req, res = response) => {
-// //     // const { id } = req.params;
-// //     // const { body } = req;
+    await product.destroy(); //ELIMINAR USUARIO DE LA BASE DE DATOS
+    // await Product.update({ estado: false });
+    res.json({
+        mgs: 'Producto eliminado'
+    });
+}
 
-// //     // try {
-// //     //     const user = await Products.findByPk(id);
+const putProduct = async (req, res = response) => {
+    const { id } = req.params;
+    const { body } = req;
 
-// //     //     if (!user) {
-// //     //         return res.json({
-// //     //             mgs: 'No existe usuario ' + body.firstName
-// //     //         });
-// //     //     }
+    console.log('i => ', id);
+    console.log('body=> ', body);
+    try {
+        const product = await Products.findByPk(id);
+        if (!product) {
+            return res.json({
+                mgs: 'No existe producto'
+            });
+        }
+       
+        await product.update(body);
 
-// //     //     await Products.update(body);
+        res.json(product);
 
-// //     //     res.json(user);
+    } catch (error) {
+        console.log(error);
+        res.json({
+            mgs: 'Hable con el administrador',
+        });
 
-// //     // } catch (error) {
-// //     //     console.log(error);
-// //     //     res.json({
-// //     //         mgs: 'Hable con el administrado',
-// //     //     });
-
-// //     // }
-// // }
+    }
+}
 
 module.exports = {
-    getProducts
-    // getProduct,
-    // createProduct,
-    // deleteProduct,
-    // putProduct
+    getProducts,
+    getProduct,
+    createProduct,
+    deleteProduct,
+    putProduct
 }
