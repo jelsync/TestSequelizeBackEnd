@@ -1,15 +1,26 @@
 const { response } = require('express');
 let Products = require('../../models').Product;
+let Categories = require('../../models').Category;
 
 const getProducts = async (req, res = response) => {
     const products = await Products.findAll();
     res.json(products);
 }
 
-const getCategoriesProduct = (req, res = response) => {
-    const category = Categories.findAll({
-        
-    })
+const getCategoriesProduct = async (req, res = response) => {
+    const { idCategory } = req.params;
+
+    const product = await Products.findAll({
+        include: {
+            model: Categories,
+            where: {
+                id: idCategory
+            }
+        }
+    });
+
+    res.json(product);
+
 }
 
 const getProduct = async (req, res = response) => {
@@ -76,7 +87,7 @@ const putProduct = async (req, res = response) => {
                 mgs: 'No existe producto'
             });
         }
-       
+
         await product.update(body);
 
         res.json(product);
@@ -92,6 +103,7 @@ const putProduct = async (req, res = response) => {
 
 module.exports = {
     getProducts,
+    getCategoriesProduct,
     getProduct,
     createProduct,
     deleteProduct,
