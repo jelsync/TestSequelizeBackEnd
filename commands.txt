@@ -6,3 +6,9 @@ npx sequelize-cli migration:generate --name migration-skeleton
 
 // Running migration
 npx sequelize-cli db:migrate
+
+// Generate Seeeder
+npx sequelize-cli seed:generate --name demo-user
+
+//Running Seeeder
+npx sequelize-cli db:seed:all

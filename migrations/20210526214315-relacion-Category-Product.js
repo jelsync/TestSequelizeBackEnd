@@ -17,7 +17,6 @@ module.exports = {
         }, {
           transaction: t
         }),
-
       ])
     })
   },
@@ -25,7 +24,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(t => {
 			return Promise.all([
-        queryInterface.removeColumn('Products', 'CategoryId', { transaction: t }),
+				queryInterface.removeColumn('Products', 'CategoryId', { transaction: t }),
 			])
 		})
   }
