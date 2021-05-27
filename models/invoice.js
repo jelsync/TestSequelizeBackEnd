@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Invoice.init({
-    date: DataTypes.DATE
+    date: DataTypes.DATE,
+    status: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Invoice',

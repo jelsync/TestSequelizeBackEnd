@@ -12,3 +12,28 @@ npx sequelize-cli seed:generate --name demo-user
 
 //Running Seeeder
 npx sequelize-cli db:seed:all
+
+//ADD new column to model
+1) sequelize migration:create --name name_of_your_migration
+2)
+module.exports = {
+  up: function(queryInterface, Sequelize) {
+    // logic for transforming into the new state
+    return queryInterface.addColumn(
+      'Todo',
+      'completed',
+     Sequelize.BOOLEAN
+    );
+
+  },
+
+  down: function(queryInterface, Sequelize) {
+    // logic for reverting the changes
+    return queryInterface.removeColumn(
+      'Todo',
+      'completed'
+    );
+  }
+}
+
+3)npx sequelize-cli db:migrate
