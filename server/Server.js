@@ -13,7 +13,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.use('/api/user', require('./routes/user'));
 app.use('/api/product', require('./routes/product'));
-// app.use('/api/user', require('./routes/user'));
+app.use('/api/category', require('./routes/category'));
 
 app.listen(3000, () => {
   console.log("Listen port ", process.env.PORT);

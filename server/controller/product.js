@@ -1,10 +1,15 @@
 const { response } = require('express');
 let Products = require('../../models').Product;
-let Categories = require('../../models').Category;
 
 const getProducts = async (req, res = response) => {
     const products = await Products.findAll();
     res.json(products);
+}
+
+const getCategoriesProduct = (req, res = response) => {
+    const category = Categories.findAll({
+        
+    })
 }
 
 const getProduct = async (req, res = response) => {
