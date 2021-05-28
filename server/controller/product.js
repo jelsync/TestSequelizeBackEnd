@@ -1,6 +1,8 @@
 const { response } = require('express');
+const { Op } = require("sequelize");
 let Products = require('../../models').Product;
 let Categories = require('../../models').Category;
+let Vendors = require('../../models').Vendor;
 
 const getProducts = async (req, res = response) => {
     const products = await Products.findAll();
@@ -18,10 +20,54 @@ const getCategoriesProduct = async (req, res = response) => {
             }
         }
     });
-
     res.json(product);
-
 }
+
+const getVendorsProduct = async (req, res = response) => {
+    const { idVendor } = req.params;
+
+    const existeProduct = await Products.findByPk(idVendor);
+
+    if (!existeProduct) {
+        return res.json({
+            mgs: 'Id product no existe'
+        });
+    }
+
+    const product = await Products.findAll({
+        include: {
+            model: Vendors,
+            where: {
+                id: idVendor
+            }
+        }
+    });
+    res.json(product);
+}
+
+const getProductForVendorsAndCategory = async (req, res = response) => {
+    const { idCategory, idVendor } = req.params;
+
+    const products = await Products.findAll({
+        where: {
+            VendorId: idVendor,
+            CategoryId: idCategory
+        },
+        include: [
+            {
+                model: Vendors,
+                id: idVendor
+            },
+            {
+                model: Categories,
+                id: idCategory,
+            }
+        ]
+    });
+
+    res.json(products);
+}
+
 
 const getProduct = async (req, res = response) => {
     const { id } = req.params;
@@ -104,6 +150,8 @@ const putProduct = async (req, res = response) => {
 module.exports = {
     getProducts,
     getCategoriesProduct,
+    getVendorsProduct,
+    getProductForVendorsAndCategory,
     getProduct,
     createProduct,
     deleteProduct,
